@@ -16,7 +16,7 @@ import java.util.Base64;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Head {
+public class Head implements Comparable<Head> {
 
     private String name;
     @NonNull
@@ -61,5 +61,16 @@ public class Head {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public int compareTo(Head o) {
+        if (name == null) {
+            return -1;
+        }
+        if (o.name == null) {
+            return 1;
+        }
+        return name.compareToIgnoreCase(o.name);
     }
 }
