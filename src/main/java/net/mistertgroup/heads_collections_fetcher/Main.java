@@ -34,6 +34,7 @@ public final class Main {
         File file = new File(outputDir, name + ".json");
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(gson.toJson(heads));
+            writer.write('\n');
         } catch (IOException e) {
             e.printStackTrace();
         }
