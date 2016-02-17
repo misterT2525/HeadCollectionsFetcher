@@ -18,15 +18,13 @@ import java.util.Base64;
 @AllArgsConstructor
 public class Head {
 
-    private final static Gson gson = new Gson();
-
     private String name;
     @NonNull
     private final String url;
     @NonNull
     private final String uuid;
 
-    public static Head parse(@NonNull ItemStack stack) throws NullPointerException, IllegalArgumentException {
+    public static Head parse(@NonNull ItemStack stack, @NonNull Gson gson) throws NullPointerException, IllegalArgumentException {
         if (!stack.getItem().equalsIgnoreCase("skull") && !stack.getItem().equalsIgnoreCase("minecraft:skull")) {
             throw new IllegalArgumentException("Not Head");
         }
@@ -45,7 +43,7 @@ public class Head {
             String url = null;
             for (JsonElement object : stack.getTag().getAsJsonObject("SkullOwner").getAsJsonObject("Properties").getAsJsonArray("textures")) {
                 if (url == null) {
-                    url = findURLFromTextures(object.getAsJsonObject().getAsJsonPrimitive("Value").getAsString(), "SKIN");
+                    url = findURLFromTextures(object.getAsJsonObject().getAsJsonPrimitive("Value").getAsString(), "SKIN", gson);
                 }
             }
             String uuid = stack.getTag().getAsJsonObject("SkullOwner").getAsJsonPrimitive("Id").getAsString();
@@ -55,7 +53,7 @@ public class Head {
         }
     }
 
-    private static String findURLFromTextures(String texturesJson, String type) {
+    private static String findURLFromTextures(String texturesJson, String type, Gson gson) {
         try {
             JsonObject root = gson.fromJson(new String(Base64.getDecoder().decode(texturesJson)), JsonObject.class);
 

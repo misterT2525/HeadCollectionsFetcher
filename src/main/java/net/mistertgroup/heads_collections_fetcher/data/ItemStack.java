@@ -14,8 +14,6 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class ItemStack {
 
-    private static final Gson gson = new Gson();
-
     @NonNull
     private final String item;
     private int amount;
@@ -23,7 +21,7 @@ public class ItemStack {
     private JsonObject tag;
 
 
-    public static ItemStack parse(@NonNull String command) throws NullPointerException, IllegalArgumentException {
+    public static ItemStack parse(@NonNull String command, @NonNull Gson gson) throws NullPointerException, IllegalArgumentException {
         String[] split = command.split(" ", 6);
 
         if (split[0].startsWith("/")) {
