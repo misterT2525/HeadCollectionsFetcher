@@ -4,7 +4,7 @@ import net.mistertgroup.heads_collections_fetcher.data.Head;
 import net.mistertgroup.heads_collections_fetcher.data.ItemStack;
 
 import com.google.common.collect.Multimap;
-import com.google.common.collect.TreeMultimap;
+import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public final class MainCollection {
 
     public static Multimap<String, Head> fetch(@NonNull Gson gson) throws IOException, NullPointerException, IllegalArgumentException {
-        Multimap<String, Head> collections = TreeMultimap.create();
+        Multimap<String, Head> collections = MultimapBuilder.hashKeys().arrayListValues().build();
         Document document = Jsoup.connect("http://heads.freshcoal.com/maincollection.php").get();
         findTabNames(document).forEach((id, name) -> collections.putAll(name, findHeads(id, document, gson)));
         return collections;
